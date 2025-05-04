@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using microprojeto_aspnet_ListOfContacts.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace microprojeto_aspnet_ListOfContacts.Data
 {
@@ -8,5 +9,7 @@ namespace microprojeto_aspnet_ListOfContacts.Data
         {
 
         }
+
+        public DbSet<Contact> Contacts { get; set; }
     }
 }
