@@ -66,5 +66,30 @@ namespace microprojeto_aspnet_ListOfContacts.Controllers
 
             return RedirectToAction("Index", "Contact");
         }
+
+        public IActionResult Edit(int id)
+        {
+            var contact = _context.Contacts.Find(id);
+
+            if (contact == null)
+            {
+                return RedirectToAction("Index", "Contact");
+            }
+
+            ContactDto contactDto = new ContactDto
+            {
+                Name = contact.Name,
+                Email = contact.Email,
+                Phone = contact.Phone,
+                Address = contact.Address,
+                City = contact.City
+            };
+
+            ViewData["ContactId"] = contact.Id;
+            ViewData["ImageFileName"] = contact.ImageFileName;
+            ViewData["CreatedAt"] = contact.CreatedAt.ToString("MM/dd/yyyy");
+
+            return View(contactDto);
+        }
     }
 }
