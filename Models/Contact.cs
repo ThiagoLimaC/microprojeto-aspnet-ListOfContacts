@@ -17,6 +17,6 @@ namespace microprojeto_aspnet_ListOfContacts.Models
         public string City { get; set; }
         [MaxLength(100)]
         public string ImageFileName { get; set; }
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

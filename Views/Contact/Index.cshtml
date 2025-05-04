@@ -13,3 +13,39 @@
 
     </div>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Image</th>
+            <th>Created At</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr>
+                <td>@contact.Id</td>
+                <td>@contact.Name</td>
+                <td>@contact.Email</td>
+                <td>@contact.Phone</td>
+                <td>@contact.Address</td>
+                <td>@contact.City</td>
+                <td><img src="/contacts/@contact.ImageFileName" width="100" /></td>
+                <td>@contact.CreatedAt.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-controller="Contact" asp-action="Edit" asp-route-id="@contact.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-controller="Contact" asp-action="Delete" asp-route-id="@contact.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
