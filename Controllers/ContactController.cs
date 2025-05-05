@@ -91,5 +91,57 @@ namespace microprojeto_aspnet_ListOfContacts.Controllers
 
             return View(contactDto);
         }
+
+        [HttpPost]
+        public IActionResult Edit(int id, ContactDto contactDto)
+        {
+            var contact = _context.Contacts.Find(id);
+
+            if (contact == null)
+            {
+                return RedirectToAction("Index", "Contact");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["ContactId"] = contact.Id;
+                ViewData["ImageFileName"] = contact.ImageFileName;
+                ViewData["CreatedAt"] = contact.CreatedAt.ToString("MM/dd/yyyy");
+
+                return View(contactDto);
+            }
+
+            // update the file name if a new image is uploaded
+            string newFileName = contact.ImageFileName;
+
+            if (contactDto.Image != null)
+            {
+                newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                newFileName += Path.GetExtension(contactDto.Image.FileName);
+
+                string imageFullPath = environment.WebRootPath + "/contacts/" + newFileName;
+                using (var stream = System.IO.File.Create(imageFullPath))
+                {
+                    contactDto.Image.CopyTo(stream);
+                }
+
+                // delete the old image file
+                string oldImageFullPath = environment.WebRootPath + "/contacts/" + contact.ImageFileName;
+                System.IO.File.Delete(oldImageFullPath);
+            }
+
+            // update the contact in the database
+            contact.Name = contactDto.Name;
+            contact.Email = contactDto.Email;
+            contact.Phone = contactDto.Phone;
+            contact.Address = contactDto.Address;
+            contact.City = contactDto.City;
+            contact.ImageFileName = newFileName;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Contact");
+        }
+        
     }
 }
