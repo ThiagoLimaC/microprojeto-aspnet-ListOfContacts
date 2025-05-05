@@ -143,5 +143,22 @@ namespace microprojeto_aspnet_ListOfContacts.Controllers
             return RedirectToAction("Index", "Contact");
         }
         
+        public IActionResult Delete(int id)
+        {
+            var contact = _context.Contacts.Find(id);
+
+            if (contact == null)
+            {
+                return RedirectToAction("Index", "Contact");
+            }
+
+            string imageFullPath = environment.WebRootPath + "/contacts/" + contact.ImageFileName;
+            System.IO.File.Delete(imageFullPath);
+
+            _context.Contacts.Remove(contact);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Contact");
+        }
     }
 }
